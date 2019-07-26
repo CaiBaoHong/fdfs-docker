@@ -91,8 +91,8 @@ RUN cd $SOURCE_DIR                                                              
 
 ########################################################################################################################
 
-# expose fdfs data dir
-VOLUME $FDFS_DATA_DIR
+# expose fdfs and fdht data dir
+VOLUME /var/local
 
 EXPOSE $STORAGE_PORT $TRACKER_PORT $FDHT_PORT
 

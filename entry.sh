@@ -46,10 +46,7 @@ sed -i "s|^tracker_server=.*$|tracker_server=$TRACKER_HOST:$TRACKER_PORT|g" ${FD
 sed -i "s|^group0.*$|group0=$FDHT_HOST:$FDHT_PORT|g"                        ${FDHT_CONF_DIR}/fdht_servers.conf
 
 if [[ -z $1 ]]; then
-  fdfs tracker
-  fdfs storage
-  fdfs dht
-  nginx
+  fdfs all
   tail -f /var/log/nginx/access.log
 
 elif [[ $1 == "nginx" ]]; then
