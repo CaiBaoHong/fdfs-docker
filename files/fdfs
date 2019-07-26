@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+#################################################
+###   commands for start up or test FastDFS   ###
+#################################################
+
+# set -e: if any command exit with a non zero value, won't execute the next command
+# set -x: print the next executed command
+set -e
+
+OPER=$2
+
+if [[ -z "$OPER" ]]; then
+  OPER="start"
+fi
+
+if [[ -z $1 ]]; then
+  # if no arguments, print help
+  echo "============== HELP ==================="
+  echo "====Start all: FastDFS storage, FastDFS tracker, FastDHT, Nginx"
+  echo " start all          -->  fdfs all"
+  echo ""
+  echo "====FastDFS: "
+  echo " storage start      -->  fdfs storage start, or: fdfs storage"
+  echo " storage stop       -->  fdfs storage stop"
+  echo " storage restart    -->  fdfs storage restart"
+  echo " tracker start      -->  fdfs tracker start, or: fdfs tracker"
+  echo " tracker stop       -->  fdfs tracker stop"
+  echo " tracker restart    -->  fdfs tracker restart"
+  echo " test upload file   -->  fdfs test upload"
+  echo ""
+  echo "====FastDHT: "
+  echo " start              -->  fdfs dht start, or: fdfs dht"
+  echo " stop upload file   -->  fdfs dht stop"
+  echo " restart            -->  fdfs dht restart"
+  echo " test upload file   -->  fdfs test dht"
+  echo "======================================="
+  exit 0
+
+elif [[ $1 == "all" ]]; then
+  echo "start FastDFS tracker, conf file: /etc/fdfs/tracker.conf"
+  fdfs_trackerd /etc/fdfs/tracker.conf start
+  echo "start FastDFS storage, conf file: /etc/fdfs/storage.conf"
+  fdfs_storaged /etc/fdfs/storage.conf start
+  echo "start FastDHT, conf file: /etc/fdht/fdhtd.conf"
+  fdhtd /etc/fdht/fdhtd.conf start
+  echo "start Nginx"
+  nginx
+
+elif [[ $1 == "tracker" ]]; then
+  echo "$OPER FastDFS tracker, conf file: /etc/fdfs/tracker.conf"
+  fdfs_trackerd /etc/fdfs/tracker.conf "$OPER"
+
+elif [[ $1 == "storage" ]]; then
+  echo "$OPER FastDFS storage, conf file: /etc/fdfs/storage.conf"
+  fdfs_storaged /etc/fdfs/storage.conf "$OPER"
+
+elif [[ $1 == "dht" ]]; then
+  echo "$OPER FastDHT, conf file: /etc/fdht/fdhtd.conf"
+  fdhtd /etc/fdht/fdhtd.conf "$OPER"
+
+elif [[ $1 == "test" && $2 == "upload" ]]; then
+  echo "test FastDFS upload, conf file: /etc/fdfs/client.conf, upload file: /etc/fdfs/test.jpg"
+  fdfs_test /etc/fdfs/client.conf upload /etc/fdfs/test.jpg
+
+elif [[ $1 == "test" && $2 == "dht" ]]; then
+  echo "test FastDHT, conf file: /etc/fdht/fdht_client.conf"
+  fdht_test /etc/fdht/fdht_client.conf
+
+else
+  echo "unrecognized command, exit 0"
+  exit 0
+
+fi
