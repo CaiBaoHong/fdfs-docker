@@ -45,7 +45,7 @@ iptables -t nat -A POSTROUTING -p tcp -m tcp --dport $TRACKER_PORT -d $IP -j SNA
 sed -i "s|^tracker_server=.*$|tracker_server=$TRACKER_HOST:$TRACKER_PORT|g" ${FDFS_CONF_DIR}/client.conf
 sed -i "s|^tracker_server=.*$|tracker_server=$TRACKER_HOST:$TRACKER_PORT|g" ${FDFS_CONF_DIR}/storage.conf
 sed -i "s|^tracker_server=.*$|tracker_server=$TRACKER_HOST:$TRACKER_PORT|g" ${FDFS_CONF_DIR}/mod_fastdfs.conf
-sed -i "s|^group0=.*$|group0=$FDHT_HOST:$FDHT_PORT|g"                        ${FDHT_CONF_DIR}/fdht_servers.conf
+sed -i "s|^group0.*$|group0=$FDHT_HOST:$FDHT_PORT|g"                        ${FDHT_CONF_DIR}/fdht_servers.conf
 
 if [[ -z $1 ]]; then
   fdfs all
