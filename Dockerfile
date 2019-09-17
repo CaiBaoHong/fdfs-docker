@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 # variables for installation
 ARG SOURCE_DIR=/usr/local/src
-ARG BUILD_DEPS='make cmake gcc libpcre3 libpcre3-dev zlib1g zlib1g-dev net-tools vim'
+ARG BUILD_DEPS='make cmake gcc libpcre3 libpcre3-dev zlib1g zlib1g-dev net-tools vim iptables'
 ARG NGINX=nginx-1.17.1
 ARG FDFS_COMMON=libfastcommon-1.0.39
 ARG FDFS_NGINX=fastdfs-nginx-module-1.20
@@ -18,6 +18,9 @@ ENV STORAGE_HTTP_PORT=8888
 ENV TRACKER_PORT=22122
 ENV TRACKER_HTTP_PORT=8080
 ENV FDHT_PORT=11411
+ENV TRACKER_HOST=127.0.0.1
+ENV STORAGE_HOST=127.0.0.1
+ENV FDHT_HOST=127.0.0.1
 
 # copy files
 COPY files/                     $SOURCE_DIR
