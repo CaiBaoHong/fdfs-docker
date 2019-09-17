@@ -39,7 +39,8 @@ if [[ -z "$FDHT_HOST" ]]; then
 fi
 
 # fix a bug of fastdfs getting storage from tracker ip is docker container ip
-iptables -t nat -A POSTROUTING -p tcp -m tcp --dport $TRACKER_PORT -d $IP -j SNAT --to $TRACKER_HOST
+echo 'IP = $IP'
+iptables -t nat -A POSTROUTING -p tcp -m tcp --dport $TRACKER_PORT -d ${IP} -j SNAT --to ${TRACKER_HOST}
 
 # update conf files
 sed -i "s|^tracker_server=.*$|tracker_server=$TRACKER_HOST:$TRACKER_PORT|g" ${FDFS_CONF_DIR}/client.conf
