@@ -19,11 +19,13 @@ set -e
 # ENV FDHT_PORT=11411
 # ENV FDFS_CONF_DIR=/etc/fdfs
 # ENV FDHT_CONF_DIR=/etc/fdht
+# ENV IP=127.0.0.1
 #
 # environment variables from "docker run -e" :
 #
 # TRACKER_HOST
 # STORAGE_HOST
+#
 
 # get runtime ip as default host
 IP=`ifconfig eth0 | grep inet | awk '{print $2}'`
@@ -39,8 +41,7 @@ if [[ -z "$FDHT_HOST" ]]; then
 fi
 
 # fix a bug of fastdfs getting storage from tracker ip is docker container ip
-echo 'IP = $IP'
-iptables -t nat -A POSTROUTING -p tcp -m tcp --dport $TRACKER_PORT -d ${IP} -j SNAT --to ${TRACKER_HOST}
+# iptables -t nat -A POSTROUTING -p tcp -m tcp --dport $TRACKER_PORT -d $IP -j SNAT --to $TRACKER_HOST
 
 # update conf files
 sed -i "s|^tracker_server=.*$|tracker_server=$TRACKER_HOST:$TRACKER_PORT|g" ${FDFS_CONF_DIR}/client.conf
